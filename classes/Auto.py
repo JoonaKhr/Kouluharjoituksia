@@ -1,3 +1,6 @@
+from this import d
+
+
 class Auto():
     def __init__(self, brand, model, year):
         self.brand = brand
@@ -6,8 +9,8 @@ class Auto():
 
     @classmethod
     def from_string(cls, string: str):
-        arvo = string.split("-")
-        return cls(arvo[0], arvo[1], int(arvo[2]))
+        brand, model, year = string.split("-")
+        return cls(brand, model, year)
 
     def __str__(self):
         return f"""
