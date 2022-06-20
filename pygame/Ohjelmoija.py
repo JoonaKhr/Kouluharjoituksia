@@ -2,6 +2,7 @@ class Ohjelmoija():
     bonus = 1.05
     def __init__(self, first, last, salary):
         self.first = first
+        self.line = ""
         self.last = last
         self.salary = salary
 
@@ -28,3 +29,5 @@ oho.print_salary_with_bonus()
 oho.apply_bonus()
 Ohjelmoija.bonus = 1.2
 oho.print_salary_with_bonus()
+oho.get_String()
+oho.print_String()
