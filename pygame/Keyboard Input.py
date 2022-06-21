@@ -8,15 +8,14 @@ class Game:
     
     def __init__(self, w, h):
         pg.init()
-        self.mouse = pg.mouse.get_pos()
+        self.mouse = (0,0)
         # Init started, points, fps and clock for updates
         self.started = False
         self.points = 0
+        self.spawned = 0
         self.FPS = 60
+        self.timer = 60
         self.FramePerSec = pg.time.Clock()
-        # Create event and set a timer for spawning a flake every X milliseconds
-        self.SPAWN_NEW = pg.USEREVENT + 1
-        pg.time.set_timer(self.SPAWN_NEW, 500)
         self.flakes = pg.sprite.Group()
         # Change icon and title
         pg.display.set_caption("Operaatio Lumihiutale Python")
@@ -28,13 +27,44 @@ class Game:
         self.gt = gt.GameText(w, h, self)
 
     def run(self):
+        # Create event and set a timer for spawning a flake every X milliseconds
+        # Also event for timer
+        SPAWN_NEW = pg.USEREVENT
+        DECREMENT_TIMER = pg.USEREVENT+1
+        pg.time.set_timer(DECREMENT_TIMER, 1000)
+        pg.time.set_timer(SPAWN_NEW, 500)
+        
         while True:
+            self.mouse = pg.mouse.get_pos()
             #self.controls.check_events(self)
             for event in pg.event.get():
-                #if event.type == pg.MOUSEBUTTONDOWN:
-                #self.started = True
-                while self.started == True:
-                    if event.type == self.SPAWN_NEW:
+                #Start the game when you press Start Game Button, reset timer and points
+                if event.type == pg.MOUSEBUTTONDOWN:
+                    if event.button == 1:
+                        if self.gt.startGameTextRect.collidepoint(self.mouse[0], self.mouse[1]):
+                            self.points = 0
+                            self.timer = 60
+                            self.started = True
+                if self.started == True:
+                    # Checks if left mouse button clicked on flakes, gib point
+                    if event.type == pg.MOUSEBUTTONDOWN:
+                        if event.button == 1:
+                            for flake in self.flakes.sprites():
+                                    if flake.rect.collidepoint(self.mouse[0], self.mouse[1]):
+                                        self.points += 1
+                                        flake.kill()
+                                        self.spawnNewFlake()
+                                        print(self.points)
+                    # If too many flake, destroy oldest
+                    if len(self.flakes.sprites()) > 5:
+                        self.flakes.sprites()[0].kill()
+                    # It's a timer
+                    if event.type == DECREMENT_TIMER:
+                        self.timer -= 1
+                        # If timer 0 stop game
+                        if self.timer == 0:
+                            self.started = False
+                    if event.type == SPAWN_NEW:
                         self.spawnNewFlake()
                 if event.type == pg.QUIT:
                     sys.exit()
@@ -44,12 +74,15 @@ class Game:
     def spawnNewFlake(self):
         self.flake = Flake.Flake(self)
         self.flakes.add(self.flake)
+        self.spawned += 1
+        print(self.spawned)
+        print(f"missed: {self.spawned - self.points}")
 
     def update(self):
         self.screen.fill((255, 255, 255))
         for flake in self.flakes:
             flake.draw()
-        self.gt.update(self.mouse)
+        self.gt.update()
         pg.display.update() # updates screen
 # w = int(input("Input width: "))
 # h = int(input("input height: "))
