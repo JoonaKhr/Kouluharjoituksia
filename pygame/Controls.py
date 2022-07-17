@@ -6,6 +6,8 @@ class Controls:
 
         for event in pg.event.get():
 
+            
+
             if event.type == pg.QUIT:
 
                 sys.exit()
@@ -18,18 +20,10 @@ class Controls:
 
     def check_key_down_events(self, event, game):
 
-        if event.key == pg.K_RIGHT:
-
-            game.text = "RIGHT"
-
-        elif event.key == pg.K_LEFT:
-
-            game.text = "LEFT"
-
-        elif event.key == pg.K_SPACE:
-
-            game.text = "SPACE"
-
-        elif event.key == pg.K_q or event.key == pg.K_ESCAPE:
+        if event.key == pg.K_BACKSPACE:
+            game.gt.nameInputText = game.gt.nameInputText[:-1]
+        elif event.key != pg.K_ESCAPE:
+            game.gt.nameInputText += event.unicode
+        elif event.key == pg.K_ESCAPE:
 
             sys.exit()

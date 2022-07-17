@@ -10,13 +10,15 @@ class Game:
         pg.init()
         self.mouse = (0,0)
         # Init started, points, fps and clock for updates
+        self.playerName = ""
         self.started = False
         self.points = 0
         self.spawned = 0
         self.FPS = 60
-        self.timer = 60
+        self.timer = 00
         self.FramePerSec = pg.time.Clock()
         self.flakes = pg.sprite.Group()
+        self.inputActive = False
         # Change icon and title
         pg.display.set_caption("Operaatio Lumihiutale Python")
         icon = pg.image.load(r"S:\koulu\OOP\Kouluharjoituksia\pygame\imgs\A1.png")
@@ -41,10 +43,18 @@ class Game:
                 #Start the game when you press Start Game Button, reset timer and points
                 if event.type == pg.MOUSEBUTTONDOWN:
                     if event.button == 1:
+                        if self.gt.nameInputArea.collidepoint(self.mouse[0], self.mouse[1]):
+                            self.inputActive = not self.inputActive
+                        elif not self.gt.nameInputArea.collidepoint(self.mouse[0], self.mouse[1]):
+                            self.inputActive = False
+                if event.type == pg.MOUSEBUTTONDOWN:
+                    if event.button == 1:
                         if self.gt.startGameTextRect.collidepoint(self.mouse[0], self.mouse[1]):
-                            self.points = 0
-                            self.timer = 60
-                            self.started = True
+                                self.points = 0
+                                self.timer = 30
+                                self.playerName = self.gt.nameInputText
+                                print(self.playerName)
+                                self.started = True
                 if self.started == True:
                     # Checks if left mouse button clicked on flakes, gib point
                     if event.type == pg.MOUSEBUTTONDOWN:
@@ -66,6 +76,13 @@ class Game:
                             self.started = False
                     if event.type == SPAWN_NEW:
                         self.spawnNewFlake()
+                if not self.started:
+                    if event.type == pg.KEYDOWN:
+                        if self.inputActive:
+                            if event.key == pg.K_BACKSPACE:
+                                self.gt.nameInputText = self.gt.nameInputText[:-1]
+                            else:
+                                self.gt.nameInputText += event.unicode
                 if event.type == pg.QUIT:
                     sys.exit()
             self.update()
