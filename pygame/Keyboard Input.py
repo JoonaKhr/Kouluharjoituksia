@@ -1,7 +1,7 @@
 import pygame as pg
 import Controls
 import game_text as gt
-import Flake, sys
+import Flake, sys, highscores
 
 
 class Game:
@@ -11,6 +11,7 @@ class Game:
         self.mouse = (0,0)
         # Init started, points, fps and clock for updates
         self.playerName = ""
+        self.highscores = highscores.Highscores()
         self.started = False
         self.points = 0
         self.spawned = 0
@@ -74,6 +75,7 @@ class Game:
                         # If timer 0 stop game
                         if self.timer == 0:
                             self.started = False
+                            self.highscores.insertHighscore(self.playerName, self.points)
                     if event.type == SPAWN_NEW:
                         self.spawnNewFlake()
                 if not self.started:

@@ -25,6 +25,7 @@ class GameText:
         
         #region nameInput
         self.nameInputArea = pg.Rect(100, 100, 140, 32)
+        self.nameInputArea.center = (int(width) // 1.3, 460)
         self.done = False
         self.color_active = pg.Color(100, 100, 100)
         self.color_inactive = pg.Color(140, 140, 140)
