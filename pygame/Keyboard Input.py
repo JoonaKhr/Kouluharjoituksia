@@ -1,3 +1,4 @@
+from random import randint
 import pygame as pg
 import Controls
 import game_text as gt
@@ -75,6 +76,8 @@ class Game:
                         # If timer 0 stop game
                         if self.timer == 0:
                             self.started = False
+                            for flake in self.flakes:
+                                flake.kill()
                             self.highscores.insertHighscore(self.playerName, self.points)
                     if event.type == SPAWN_NEW:
                         self.spawnNewFlake()
@@ -107,3 +110,5 @@ class Game:
 # h = int(input("input height: "))
 game = Game(400, 500)
 game.run()
+
+#lisää juttu ettei se lähetä tuloksia tyhjällä nimellä

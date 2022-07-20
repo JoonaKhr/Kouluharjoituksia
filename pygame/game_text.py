@@ -14,7 +14,7 @@ class GameText:
         #region timerText
         self.timerTextArea = self.font.render("Timer", True, (100, 100, 100), (200, 200, 200))
         self.timerTextRect = self.timerTextArea.get_rect()
-        self.timerTextRect.center = (int(width) // 6, 430)
+        self.timerTextRect.center = (int(width) // 2, 50)
         #endregion
 
         #region pointsText

@@ -6,7 +6,8 @@ class Flake(pg.sprite.Sprite):
     def __init__(self, game):
         super().__init__()
         pg.init()
-        self.image = pg.image.load(r"imgs\A1.png")
+        self.image = pg.image.load(r"imgs\spacecat.png")
+        self.image = pg.transform.scale(self.image, (128 // random.randint(2, 4), 166 // random.randint(2, 4)))
         self.rect = self.image.get_rect()
         self.rect.center=(random.randint(32, 400-32), random.randint(32, 350-32))
         self.game = game
